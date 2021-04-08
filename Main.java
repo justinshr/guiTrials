@@ -2,18 +2,18 @@ import javax.swing.*;
 import javax.swing.border.*;
 import java.awt.*;
 public class Main {
-  JFrame frame;
-  JPanel overallPanel;
-  JPanel buttonPanel;
-  JButton aboutButton ;
-  JButton loadButton;
-  JButton addButton;
-  JButton saveButton;
-  JButton visualButton;
+  protected JFrame frame;
+  protected JPanel overallPanel;
+  protected JPanel buttonPanel;
+  protected JButton aboutButton;
+  protected JButton loadButton;
+  protected JButton addButton;
+  protected JButton saveButton;
+  protected JButton visualButton;
+
+  //Constructor, sets up the GUI application and performs other operations
   public Main(){
     setUpFrame();
-
-    
   }
 
   public void setUpFrame(){
