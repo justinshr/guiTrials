@@ -6,6 +6,9 @@ public class Main {
   protected JFrame frame;
   protected JPanel aboutPanel;
   protected JPanel loadPanel;
+  protected JPanel addPanel;
+  protected JPanel savePanel;
+  protected JPanel visualizePanel;
 
   protected JPanel overallPanel;
   protected JPanel buttonPanel;
@@ -35,15 +38,15 @@ public class Main {
     buttonPanel=new JPanel(new GridLayout(10,1,0,2));
     //create the buttons
     aboutButton = new JButton("About");
-
+    //when about button gets pressed, open the About frame by sending a message to openFrame method
     aboutButton.addActionListener(new java.awt.event.ActionListener() {
       public void actionPerformed(ActionEvent event)
       {
         openFrame("about");
       }
     });
-    loadButton=new JButton("Load Data");
 
+    loadButton=new JButton("Load Data");
     loadButton.addActionListener(new java.awt.event.ActionListener() {
       public void actionPerformed(ActionEvent event)
       {
@@ -52,9 +55,30 @@ public class Main {
     });
 
     addButton=new JButton("Add Data");
-    saveButton=new JButton("Save Data");
-    visualButton=new JButton("Visualize Data");
+    addButton.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(ActionEvent event)
+      {
+        openFrame("add");
+      }
+    });
 
+    saveButton=new JButton("Save Data");
+    saveButton.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(ActionEvent event)
+      {
+        openFrame("save");
+      }
+    });
+
+    visualButton=new JButton("Visualize Data");
+    visualButton.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(ActionEvent event)
+      {
+        openFrame("visual");
+      }
+    });
+
+    //create Panels that show up when buttons are pressed
     setUpPanels();
 
     //add buttons to the buttonPanel
@@ -75,36 +99,79 @@ public class Main {
 
   public void setUpPanels()
   {
+    //set up Panels to be to the right of the buttonPanel
     GridBagConstraints panelLayout = new GridBagConstraints();
     panelLayout.anchor=GridBagConstraints.PAGE_START;
+    //add padding to the left so the new panels are not too close to the buttons
     panelLayout.insets=new Insets(0,10,0,0);
     
+    //set up individual panels
     setUpAbout(panelLayout);
     setUpLoad(panelLayout);
-    
+    setUpAdd(panelLayout);
+    setUpSave(panelLayout);
+    setUpVisualize(panelLayout);
   }
 
   public void setUpAbout(GridBagConstraints panelLayout)
   {
-    JLabel aboutTitle=new JLabel("About");
+    //use HTML to create new lines 
+    JLabel aboutTitle=new JLabel("<html> <h3>Team 45</h3> <br/> Justin Shr <br/> Manav Korlipara <br/> Sohan Kancherla <br/> Ayush Gaur </html>");
     aboutPanel=new JPanel();
     aboutPanel.add(aboutTitle);
     overallPanel.add(aboutPanel, panelLayout);
+    //make this panel invisible, until the About button is pressed
     aboutPanel.setVisible(false);
   }
 
   public void setUpLoad(GridBagConstraints panelLayout)
   {
-    JLabel loadTitle=new JLabel("Load");
+    JLabel loadTitle=new JLabel("Load"); //delete this line
     loadPanel=new JPanel();
     loadPanel.add(loadTitle);
     overallPanel.add(loadPanel, panelLayout);
+    //make this panel invisible, until the Load button is pressed
     loadPanel.setVisible(false);
   }
 
+  public void setUpAdd(GridBagConstraints panelLayout)
+  {
+    JLabel loadTitle=new JLabel("Add"); //delete this line
+    addPanel=new JPanel();
+    addPanel.add(loadTitle);
+    overallPanel.add(addPanel, panelLayout);
+    //make this panel invisible, until the Add button is pressed
+    addPanel.setVisible(false);
+  }
+
+  public void setUpSave(GridBagConstraints panelLayout)
+  {
+    JLabel loadTitle=new JLabel("Save");
+    savePanel=new JPanel();
+    savePanel.add(loadTitle);
+    overallPanel.add(savePanel, panelLayout);
+    //make this panel invisible, until the Load button is pressed
+    savePanel.setVisible(false);
+  }
+
+  public void setUpVisualize(GridBagConstraints panelLayout)
+  {
+    JLabel loadTitle=new JLabel("Visualize");
+    visualizePanel=new JPanel();
+    visualizePanel.add(loadTitle);
+    overallPanel.add(visualizePanel, panelLayout);
+    //make this panel invisible, until the Visualize button is pressed
+    visualizePanel.setVisible(false);
+  }
+
   private void openFrame(String buttonName){
+    //make panels invisible first, so no conflict of frames to show
     loadPanel.setVisible(false);
     aboutPanel.setVisible(false);
+    addPanel.setVisible(false);
+    savePanel.setVisible(false);
+    visualizePanel.setVisible(false);
+    //following are if statements based on which button was pressed to show what frame
     if(buttonName.equals("about"))
     {
       aboutPanel.setVisible(true);
@@ -112,6 +179,18 @@ public class Main {
     else if(buttonName.equals("load"))
     {
       loadPanel.setVisible(true);
+    }
+    else if(buttonName.equals("add"))
+    {
+      addPanel.setVisible(true);
+    }
+    else if(buttonName.equals("save"))
+    {
+      savePanel.setVisible(true);
+    }
+    else if(buttonName.equals("visual"))
+    {
+      visualizePanel.setVisible(true);
     }
 
   }
