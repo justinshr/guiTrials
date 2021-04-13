@@ -6,6 +6,8 @@ public class Main {
   protected JFrame frame;
   protected JPanel aboutPanel;
   protected JPanel loadPanel;
+
+
   protected JPanel addPanel;
   protected JPanel savePanel;
   protected JPanel visualizePanel;
@@ -28,8 +30,8 @@ public class Main {
     //form basis of the GUI application, starting with the Title: Covid 19 vaccine information
     frame = new JFrame("COVID 19 Vaccine Information");
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    frame.setSize(300,300);
-    
+    frame.setSize(750,500);
+    //frame.setSize(300,300);
     //create a formating panel to add to the frame
     overallPanel=new JPanel(new GridBagLayout());
     //overallPanel.setBorder(new EmptyBorder(0,0,0,0));
@@ -94,6 +96,7 @@ public class Main {
 
     //keeps button on the left side of the application
     frame.add(overallPanel,BorderLayout.LINE_START);
+
     frame.setVisible(true);
   }
 
@@ -101,7 +104,7 @@ public class Main {
   {
     //set up Panels to be to the right of the buttonPanel
     GridBagConstraints panelLayout = new GridBagConstraints();
-    panelLayout.anchor=GridBagConstraints.PAGE_START;
+    panelLayout.anchor=GridBagConstraints.FIRST_LINE_START;
     //add padding to the left so the new panels are not too close to the buttons
     panelLayout.insets=new Insets(0,10,0,0);
     
@@ -128,8 +131,31 @@ public class Main {
   {
     JLabel loadTitle=new JLabel("Load"); //delete this line
     loadPanel=new JPanel();
-    loadPanel.add(loadTitle);
+    String[] columns={"ID", "Last Name","First Name", "Vaccine Type","Vaccination Date","Vaccine Location"};
+    Object[][] data=Data.data;
+    if(data==null)
+    {
+      data=new Object[1][6];
+      for(int i=0;i<6;i++)
+      {
+        data[0][i]="null";
+      }
+    }
+
+    JTable loadTable=new JTable(data, columns);
+    //made some columns wider as some of the column names were too long
+    loadTable.getColumnModel().getColumn(3).setPreferredWidth(100);
+    loadTable.getColumnModel().getColumn(4).setPreferredWidth(150);
+    loadTable.getColumnModel().getColumn(5).setPreferredWidth(150);
+
+    JScrollPane scrollPane = new JScrollPane(loadTable);
+
+    loadTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+
+
+    loadPanel.add(scrollPane);
     overallPanel.add(loadPanel, panelLayout);
+
     //make this panel invisible, until the Load button is pressed
     loadPanel.setVisible(false);
   }
