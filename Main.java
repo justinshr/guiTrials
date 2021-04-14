@@ -20,6 +20,8 @@ public class Main {
   protected JButton saveButton;
   protected JButton visualButton;
 
+  protected Data dataObject=new Data();
+
   //Constructor, sets up the GUI application and performs other operations
   public Main(){
     
@@ -132,10 +134,11 @@ public class Main {
     JLabel loadTitle=new JLabel("Load"); //delete this line
     loadPanel=new JPanel();
     String[] columns={"ID", "Last Name","First Name", "Vaccine Type","Vaccination Date","Vaccine Location"};
-    Object[][] data=Data.data;
+    dataObject.addLines();
+    String[][] data=dataObject.returnData;
     if(data==null)
     {
-      data=new Object[1][6];
+      data=new String[1][6];
       for(int i=0;i<6;i++)
       {
         data[0][i]="null";
@@ -150,6 +153,7 @@ public class Main {
 
     JScrollPane scrollPane = new JScrollPane(loadTable);
 
+    //to create Horizontal scrollbars
     loadTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
 
