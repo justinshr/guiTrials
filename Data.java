@@ -1,6 +1,7 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.*;
 import java.util.*;
 
 public class Data {
@@ -11,13 +12,13 @@ public class Data {
     public static String[][] returnData;
     //create a List<String> to find the different vaccine types to help with graphs
     private static List<String> vaccineTypes=new ArrayList<String>();
-    public void addLines() {
+    public void addLines(String path) {
         try {
             String line = "";
             String splitBy = ",";
             String currLine = "";
             //BufferedReader br = new BufferedReader(new FileReader("/Users/manav/guiTrials/TeamProjectRandomData - 10People.csv"));
-            BufferedReader br = new BufferedReader(new FileReader("/home/runner/guiTrials/TeamProjectRandomData - 50People.csv"));
+            BufferedReader br = new BufferedReader(new FileReader(path));
             columns=0;
             while ((line = br.readLine()) != null) {
                 String[] data = line.split(splitBy);
@@ -61,4 +62,19 @@ public class Data {
           
         }
     }
+
+    public boolean validPath(String input)
+    {
+      File file=new File(input);
+      if(file.exists())
+      {
+        return true;
+      }
+      else
+      {
+        return false;
+      }
+
+    }
+
 }

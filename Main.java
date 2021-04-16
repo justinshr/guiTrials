@@ -6,7 +6,7 @@ public class Main {
   protected JFrame frame;
   protected JPanel aboutPanel;
   protected JPanel loadPanel;
-
+  protected GridBagConstraints buttonPanelLayout;
 
   protected JPanel addPanel;
   protected JPanel savePanel;
@@ -92,7 +92,7 @@ public class Main {
     buttonPanel.add(saveButton);
     buttonPanel.add(visualButton);
 
-    GridBagConstraints buttonPanelLayout = new GridBagConstraints();
+    buttonPanelLayout = new GridBagConstraints();
     buttonPanelLayout.anchor=GridBagConstraints.FIRST_LINE_START;
     overallPanel.add(buttonPanel,0);
 
@@ -112,7 +112,8 @@ public class Main {
     
     //set up individual panels
     setUpAbout(panelLayout);
-    setUpLoad(panelLayout);
+    preLoad(panelLayout);
+    //setUpLoad(panelLayout);
     setUpAdd(panelLayout);
     setUpSave(panelLayout);
     setUpVisualize(panelLayout);
@@ -129,35 +130,84 @@ public class Main {
     aboutPanel.setVisible(false);
   }
 
-  public void setUpLoad(GridBagConstraints panelLayout)
+  public void preLoad(GridBagConstraints panelLayout)
+  {
+    loadPanel=new JPanel();
+    JLabel ask=new JLabel("Enter Valid Path");
+    JTextField textInput=new JTextField(5);
+    //creates a text field for user to put in valid path
+    textInput.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(ActionEvent event) {
+        String input=textInput.getText();
+        //removes the text field to create table
+        ask.setVisible(false);
+        textInput.setVisible(false);
+        //calls this method to check if path is valid and creates table
+        setUpLoad(panelLayout,input);
+      }
+    });
+    loadPanel.add(ask);
+    loadPanel.add(textInput);
+    overallPanel.add(loadPanel, panelLayout);
+
+    //make this panel invisible, until the Load button is pressed
+    loadPanel.setVisible(false);
+    //setUpLoad(panelLayout," ");
+    
+  }
+  public void setUpLoad(GridBagConstraints panelLayout, String input)
   {
     JLabel loadTitle=new JLabel("Load"); //delete this line
-    loadPanel=new JPanel();
-    String[] columns={"ID", "Last Name","First Name", "Vaccine Type","Vaccination Date","Vaccine Location"};
-    dataObject.addLines();
-    String[][] data=dataObject.returnData;
-    if(data==null)
-    {
-      data=new String[1][6];
-      for(int i=0;i<6;i++)
-      {
-        data[0][i]="null";
+    //loadPanel=new JPanel();
+    /*
+    JLabel ask=new JLabel("Enter Valid Path");
+    JTextField textInput=new JTextField(5);
+    String input="";
+    textInput.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(ActionEvent event) {
+        String input=textInput.getText();
+        setUpLoad(panelLayout);
       }
+    });
+    loadPanel.add(ask);
+    loadPanel.add(textInput);
+    */
+    if(dataObject.validPath(input))
+    {
+
+      String[] columns={"ID", "Last Name","First Name", "Vaccine Type","Vaccination Date","Vaccine Location"};
+      
+      dataObject.addLines(input);
+      String[][] data=dataObject.returnData;
+      if(data==null)
+      {
+        data=new String[1][6];
+        for(int i=0;i<6;i++)
+        {
+          data[0][i]="null";
+        }
+      }
+
+      JTable loadTable=new JTable(data, columns);
+      //made some columns wider as some of the column names were too long
+      loadTable.getColumnModel().getColumn(3).setPreferredWidth(100);
+      loadTable.getColumnModel().getColumn(4).setPreferredWidth(150);
+      loadTable.getColumnModel().getColumn(5).setPreferredWidth(150);
+
+      JScrollPane scrollPane = new JScrollPane(loadTable);
+
+      //to create Horizontal scrollbars
+      loadTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+
+      loadPanel.add(scrollPane);
     }
-
-    JTable loadTable=new JTable(data, columns);
-    //made some columns wider as some of the column names were too long
-    loadTable.getColumnModel().getColumn(3).setPreferredWidth(100);
-    loadTable.getColumnModel().getColumn(4).setPreferredWidth(150);
-    loadTable.getColumnModel().getColumn(5).setPreferredWidth(150);
-
-    JScrollPane scrollPane = new JScrollPane(loadTable);
-
-    //to create Horizontal scrollbars
-    loadTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-
-
-    loadPanel.add(scrollPane);
+    else
+    {
+      
+      JLabel error=new JLabel("<html><b>Invalid Path</b></html>");
+      loadPanel.add(error);
+      
+    }
     overallPanel.add(loadPanel, panelLayout);
 
     //make this panel invisible, until the Load button is pressed
