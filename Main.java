@@ -211,7 +211,7 @@ public class Main {
     overallPanel.add(loadPanel, panelLayout);
 
     //make this panel invisible, until the Load button is pressed
-    loadPanel.setVisible(false);
+    //loadPanel.setVisible(false);
   }
 
   public void setUpAdd(GridBagConstraints panelLayout)
