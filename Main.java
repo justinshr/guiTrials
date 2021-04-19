@@ -27,7 +27,8 @@ public class Main {
   protected Data dataObject=new Data();
   protected String[] columns={"ID", "Last Name","First Name", "Vaccine Type","Vaccination Date","Vaccine Location"};
 
-  JLabel error;
+  protected JLabel loadError;
+  protected JLabel addError;
 
   //Constructor, sets up the GUI application and performs other operations
   public Main(){
@@ -142,20 +143,37 @@ public class Main {
   {
     loadPanel=new JPanel();
     JLabel ask=new JLabel("Enter Valid Path");
+    loadError=new JLabel("<html><b>Invalid Path</b></html>");
     JTextField textInput=new JTextField(5);
     //creates a text field for user to put in valid path
     textInput.addActionListener(new java.awt.event.ActionListener() {
       public void actionPerformed(ActionEvent event) {
         String input=textInput.getText();
         //removes the text field to create table
-        ask.setVisible(false);
-        textInput.setVisible(false);
+        if(dataObject.validPath(input))
+        {
+          ask.setVisible(false);
+          textInput.setVisible(false);
+          loadError.setVisible(false);
+        }
+        else
+        {
+          textInput.setText("");
+          if(loadError!=null)
+          {
+            loadError.setVisible(true);
+          }
+
+        }
         //calls this method to check if path is valid and creates table
-        setUpLoad(panelLayout,input);
+        
+          setUpLoad(panelLayout,input);
+        
       }
     });
     loadPanel.add(ask);
     loadPanel.add(textInput);
+    loadPanel.add(loadError);
     overallPanel.add(loadPanel, panelLayout);
 
     //make this panel invisible, until the Load button is pressed
@@ -195,12 +213,6 @@ public class Main {
       loadTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
       loadPanel.add(scrollPane);
-    }
-    else
-    {
-      
-      JLabel error=new JLabel("<html><b>Invalid Path</b></html>");
-      loadPanel.add(error);
       
     }
     overallPanel.add(loadPanel, panelLayout);
@@ -211,6 +223,8 @@ public class Main {
     JPanel labelPanel=new JPanel(new GridLayout(0,1));
     JPanel textfieldPanel=new JPanel(new GridLayout(0,1));
     addPanel=new JPanel();
+
+    addError=new JLabel("invalid inputs");
 
     String addDate="Date: ";
     String addId="ID:";
@@ -266,9 +280,9 @@ public class Main {
         String type=typeField.getText();
         String location=locationField.getText();
         if(last.equals("")||first.equals("")||type.equals("")||location.equals("")|| !validInputs( id, last, first, type,  date, location)){
-          error=new JLabel("invalid inputs");
-          error.setVisible(true);
-          addPanel.add(error);
+          
+          addError.setVisible(true);
+          //addPanel.add(error);
         }
         else{
           String newRow[]={id,last,first,type,date,location};
@@ -288,6 +302,7 @@ public class Main {
     addPanel.add(labelPanel,BorderLayout.CENTER);
     addPanel.add(textfieldPanel,BorderLayout.LINE_END);
     addPanel.add(submitButton);
+    addPanel.add(addError);
     
     overallPanel.add(addPanel, panelLayout);
 
@@ -379,9 +394,13 @@ public class Main {
     addPanel.setVisible(false);
     savePanel.setVisible(false);
     visualizePanel.setVisible(false);
-    if(error!=null)
+    if(loadError!=null)
     {
-      error.setVisible(false);
+      loadError.setVisible(false);
+    }
+    if(addError!=null)
+    {
+      addError.setVisible(false);
     }
     //following are if statements based on which button was pressed to show what frame
     if(buttonName.equals("about"))
