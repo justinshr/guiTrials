@@ -74,6 +74,10 @@ public class Data {
       {
         return false;
       }
+    }
+
+    //use this method to implement save data
+    public void writeFile(String input){
 
     }
 

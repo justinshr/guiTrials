@@ -130,6 +130,7 @@ public class Main {
     aboutPanel.setVisible(false);
   }
 
+  //helper method that creates a textfield for users to put in path to csv file
   public void preLoad(GridBagConstraints panelLayout)
   {
     loadPanel=new JPanel();
@@ -155,23 +156,10 @@ public class Main {
     //setUpLoad(panelLayout," ");
     
   }
+
+  //main load method that takes user input and creates table with bars
   public void setUpLoad(GridBagConstraints panelLayout, String input)
   {
-    JLabel loadTitle=new JLabel("Load"); //delete this line
-    //loadPanel=new JPanel();
-    /*
-    JLabel ask=new JLabel("Enter Valid Path");
-    JTextField textInput=new JTextField(5);
-    String input="";
-    textInput.addActionListener(new java.awt.event.ActionListener() {
-      public void actionPerformed(ActionEvent event) {
-        String input=textInput.getText();
-        setUpLoad(panelLayout);
-      }
-    });
-    loadPanel.add(ask);
-    loadPanel.add(textInput);
-    */
     if(dataObject.validPath(input))
     {
 
@@ -209,9 +197,6 @@ public class Main {
       
     }
     overallPanel.add(loadPanel, panelLayout);
-
-    //make this panel invisible, until the Load button is pressed
-    //loadPanel.setVisible(false);
   }
 
   public void setUpAdd(GridBagConstraints panelLayout)
@@ -220,6 +205,7 @@ public class Main {
     addPanel=new JPanel();
     addPanel.add(loadTitle);
     overallPanel.add(addPanel, panelLayout);
+    
     //make this panel invisible, until the Add button is pressed
     addPanel.setVisible(false);
   }
@@ -228,7 +214,22 @@ public class Main {
   {
     JLabel loadTitle=new JLabel("Save");
     savePanel=new JPanel();
-    savePanel.add(loadTitle);
+    JLabel ask=new JLabel("Enter Valid File To Write To");
+    JTextField textInput=new JTextField(5);
+    //creates a text field for user to put in valid path
+    textInput.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(ActionEvent event) {
+        String input=textInput.getText();
+        //removes the text field to create table
+        ask.setVisible(false);
+        textInput.setVisible(false);
+        //calls this method to check if path is valid and creates table
+        dataObject.writeFile(input);
+      }
+    });
+    //savePanel.add(loadTitle);
+    savePanel.add(ask);
+    savePanel.add(textInput);
     overallPanel.add(savePanel, panelLayout);
     //make this panel invisible, until the Load button is pressed
     savePanel.setVisible(false);
