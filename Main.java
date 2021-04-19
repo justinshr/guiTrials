@@ -279,8 +279,14 @@ public class Main {
         String first=firstField.getText();
         String type=typeField.getText();
         String location=locationField.getText();
-        if(last.equals("")||first.equals("")||type.equals("")||location.equals("")|| !validInputs( id, last, first, type,  date, location)){
-          
+
+        boolean empty=last.equals("")||first.equals("")||type.equals("")||location.equals("") ||id.equals("")||date.equals("");
+        boolean valid=validInputs(id, last, first, type,  date, location);
+        if(valid)
+        {
+          id=idFix(id);
+        }
+        if(empty|| !valid){  
           addError.setVisible(true);
           //addPanel.add(error);
         }
@@ -350,6 +356,22 @@ public class Main {
       }
     }
     return true;
+  }
+
+  public String idFix(String id)
+  {
+    if(id.length()==5)
+    {
+      return id;
+    }
+    else{
+      int zeros=5-id.length();
+      for(int i=1;i<=zeros;i++)
+      {
+        id="0"+id;
+      }
+      return id;
+    }
   }
 
   public void setUpSave(GridBagConstraints panelLayout)
