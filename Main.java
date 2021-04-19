@@ -1,4 +1,5 @@
 import javax.swing.*;
+import javax.swing.text.*;
 import javax.swing.border.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
@@ -25,6 +26,8 @@ public class Main {
 
   protected Data dataObject=new Data();
   protected String[] columns={"ID", "Last Name","First Name", "Vaccine Type","Vaccination Date","Vaccine Location"};
+
+  JLabel error;
 
   //Constructor, sets up the GUI application and performs other operations
   public Main(){
@@ -233,10 +236,11 @@ public class Main {
     JFormattedTextField dateField=new JFormattedTextField();
     //dateField.setValue(new Integer(numPeriods));
     dateField.setColumns(10);
-
+ 
     JFormattedTextField idField=new JFormattedTextField();
-    //idField.setValue(new Integer(numPeriods));
+      //idField.setValue(new Integer(numPeriods));
     idField.setColumns(10);
+    
 
     JTextField lastField=new JTextField(10);
     JTextField firstField=new JTextField(10);
@@ -261,30 +265,76 @@ public class Main {
         String first=firstField.getText();
         String type=typeField.getText();
         String location=locationField.getText();
-        if(last.equals("")||first.equals("")||type.equals("")||location.equals("")){
-          
+        if(last.equals("")||first.equals("")||type.equals("")||location.equals("")|| !validInputs( id, last, first, type,  date, location)){
+          error=new JLabel("invalid inputs");
+          error.setVisible(true);
+          addPanel.add(error);
         }
         else{
           String newRow[]={id,last,first,type,date,location};
           loadTableModel.addRow(newRow);
           dataObject.addRow(id,last,first,type,date,location);
-          dateField.setText("");
-          idField.setText("");
-          lastField.setText("");
-          firstField.setText("");
-          typeField.setText("");
-          locationField.setText("");
         }
+        dateField.setText("");
+        idField.setText("");
+        lastField.setText("");
+        firstField.setText("");
+        typeField.setText("");
+        locationField.setText("");
       }
     });
+    
+    
     addPanel.add(labelPanel,BorderLayout.CENTER);
     addPanel.add(textfieldPanel,BorderLayout.LINE_END);
     addPanel.add(submitButton);
+    
     overallPanel.add(addPanel, panelLayout);
 
 
     //make this panel invisible, until the Add button is pressed
     addPanel.setVisible(false);
+  }
+
+  //check if added inputs are valid
+  public boolean validInputs(String id, String last, String first,String type, String date, String location)
+  {
+    return numberInputs(id,false) && stringInputs(last) && stringInputs(first) && stringInputs(type) && numberInputs(date,true) && stringInputs(location);
+  }
+
+  //check if inputs that are supposed to be Strings are strings
+  public boolean stringInputs(String input)
+  {
+    for(int i=0;i<input.length();i++)
+    {
+      char check=input.charAt(i);
+      if(!Character.isLetter(check))
+      {
+        return false;
+      }
+    }
+    return true;
+  }
+  //check if inputs are numbers
+  public boolean numberInputs(String input, boolean date)
+  {
+    if(!date && input.length()>5)
+    {
+      return false;
+    }
+    for(int i=0;i<input.length();i++)
+    {
+      char check=input.charAt(i);
+      if(date &&(i==2 || i==5))
+      {
+        continue;
+      }
+      if(!Character.isDigit(check))
+      {
+        return false;
+      }
+    }
+    return true;
   }
 
   public void setUpSave(GridBagConstraints panelLayout)
@@ -329,6 +379,10 @@ public class Main {
     addPanel.setVisible(false);
     savePanel.setVisible(false);
     visualizePanel.setVisible(false);
+    if(error!=null)
+    {
+      error.setVisible(false);
+    }
     //following are if statements based on which button was pressed to show what frame
     if(buttonName.equals("about"))
     {
