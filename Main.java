@@ -20,7 +20,10 @@ public class Main {
   protected JButton saveButton;
   protected JButton visualButton;
 
+  protected JTable loadTable;
+
   protected Data dataObject=new Data();
+  protected String[] columns={"ID", "Last Name","First Name", "Vaccine Type","Vaccination Date","Vaccine Location"};
 
   //Constructor, sets up the GUI application and performs other operations
   public Main(){
@@ -162,9 +165,6 @@ public class Main {
   {
     if(dataObject.validPath(input))
     {
-
-      String[] columns={"ID", "Last Name","First Name", "Vaccine Type","Vaccination Date","Vaccine Location"};
-      
       dataObject.addLines(input);
       String[][] data=dataObject.returnData;
       if(data==null)
@@ -175,8 +175,9 @@ public class Main {
           data[0][i]="null";
         }
       }
-
-      JTable loadTable=new JTable(data, columns);
+      //createTable(data, columns);
+      
+      loadTable=new JTable(data, columns);
       //made some columns wider as some of the column names were too long
       loadTable.getColumnModel().getColumn(3).setPreferredWidth(100);
       loadTable.getColumnModel().getColumn(4).setPreferredWidth(150);
@@ -198,14 +199,102 @@ public class Main {
     }
     overallPanel.add(loadPanel, panelLayout);
   }
+/*
+  public void createTable(String[][] data, String[] columns)
+  {
+      loadTable=new JTable(data, columns);
+      //made some columns wider as some of the column names were too long
+      loadTable.getColumnModel().getColumn(3).setPreferredWidth(100);
+      loadTable.getColumnModel().getColumn(4).setPreferredWidth(150);
+      loadTable.getColumnModel().getColumn(5).setPreferredWidth(150);
 
+      JScrollPane scrollPane = new JScrollPane(loadTable);
+
+      //to create Horizontal scrollbars
+      loadTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+
+      loadPanel.add(scrollPane);
+  }
+*/
   public void setUpAdd(GridBagConstraints panelLayout)
   {
-    JLabel loadTitle=new JLabel("Add"); //delete this line
+    JPanel labelPanel=new JPanel(new GridLayout(0,1));
+    JPanel textfieldPanel=new JPanel(new GridLayout(0,1));
     addPanel=new JPanel();
-    addPanel.add(loadTitle);
-    overallPanel.add(addPanel, panelLayout);
+
+    String addDate="Date: ";
+    String addId="ID:";
+    String addLastName="Last Name:";
+    String addFirstName="First Name:";
+    String addType="Vaccination Type: ";
+    String addLocation="Location: ";
+
+    JLabel dateLabel=new JLabel(addDate);
+    JLabel idLabel=new JLabel(addId);
+    JLabel lastNameLabel=new JLabel(addLastName);
+    JLabel firstNameLabel=new JLabel(addFirstName);
+    JLabel typeLabel=new JLabel(addType);
+    JLabel locationLabel=new JLabel(addLocation);
+
+    labelPanel.add(dateLabel);
+    labelPanel.add(idLabel);
+    labelPanel.add(lastNameLabel);
+    labelPanel.add(firstNameLabel);
+    labelPanel.add(typeLabel);
+    labelPanel.add(locationLabel);
+
+    JFormattedTextField dateField=new JFormattedTextField();
+    //dateField.setValue(new Integer(numPeriods));
+    dateField.setColumns(10);
+
+    JFormattedTextField idField=new JFormattedTextField();
+    //idField.setValue(new Integer(numPeriods));
+    idField.setColumns(10);
+
+    JTextField lastField=new JTextField(10);
+    JTextField firstField=new JTextField(10);
+    JTextField typeField=new JTextField(10);
+    JTextField locationField=new JTextField(10);
     
+
+    textfieldPanel.add(dateField);
+    textfieldPanel.add(idField);
+    textfieldPanel.add(lastField);
+    textfieldPanel.add(firstField);
+    textfieldPanel.add(typeField);
+    textfieldPanel.add(locationField);
+
+    JButton submitButton=new JButton("Submit Data");
+    submitButton.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(ActionEvent event)
+      {
+        String id=idField.getText();  //non string
+        String date=dateField.getText(); //non string
+        String last=lastField.getText();
+        String first=firstField.getText();
+        String type=typeField.getText();
+        String location=locationField.getText();
+        if(last.equals("")||first.equals("")||type.equals("")||location.equals("")){
+          
+        }
+        else{
+          //String newRow=date+last+first+type+location;
+          dataObject.addRow(id,last,first,type,date,location);
+          dateField.setText("");
+          idField.setText("");
+          lastField.setText("");
+          firstField.setText("");
+          typeField.setText("");
+          locationField.setText("");
+        }
+      }
+    });
+    addPanel.add(labelPanel,BorderLayout.CENTER);
+    addPanel.add(textfieldPanel,BorderLayout.LINE_END);
+    addPanel.add(submitButton);
+    overallPanel.add(addPanel, panelLayout);
+
+
     //make this panel invisible, until the Add button is pressed
     addPanel.setVisible(false);
   }
@@ -260,6 +349,7 @@ public class Main {
     else if(buttonName.equals("load"))
     {
       loadPanel.setVisible(true);
+
     }
     else if(buttonName.equals("add"))
     {

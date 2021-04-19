@@ -25,12 +25,15 @@ public class Data {
                 //currLine = (data[0] + ", " + data[1] + ", " + data[2] +
                 //        ", " + data[3] + ", " + data[4] + ", " + data[5]);
                 //add individually into lines to make conversion into String [][] easier
-                for(int i=0;i<6;i++)
+                //try to ignore the first line of csv files that has the format of the strings
+                if(!data[0].equals("ID"))
                 {
-                  lines.add(data[i]);
-                }
-                
+                  for(int i=0;i<6;i++)
+                  {
+                    lines.add(data[i]);
+                  }
                 columns++;
+                }
             }
             setUpObjectArray();
         } catch (IOException e) {
@@ -41,6 +44,18 @@ public class Data {
 
     public String getLine (int lineNumber){
         return lines.get(lineNumber - 1);
+    }
+
+    public void addRow(String id, String lName, String fName, String type, String date, String location)
+    {
+      columns++;
+      lines.add(id);
+      lines.add(lName);
+      lines.add(fName);
+      lines.add(type);
+      lines.add(date);
+      lines.add(location);
+      setUpObjectArray();
     }
 
     public void setUpObjectArray(){
