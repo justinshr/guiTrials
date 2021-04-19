@@ -48,7 +48,7 @@ public class Data {
 
     public void addRow(String id, String lName, String fName, String type, String date, String location)
     {
-      columns++;
+      columns+=1;
       lines.add(id);
       lines.add(lName);
       lines.add(fName);
@@ -66,6 +66,10 @@ public class Data {
         {
           for(int j=0;j<6;j++)
           {
+            if(index>=lines.size())
+            {
+              break;
+            }
             returnData[i][j]=lines.get(index);
             //find individual vaccine types by looking at the 3rd element
             if(j==3 && !vaccineTypes.contains(lines.get(index)))
@@ -74,8 +78,9 @@ public class Data {
             }
             index++;
           }
-          
         }
+
+
     }
 
     public boolean validPath(String input)

@@ -1,5 +1,6 @@
 import javax.swing.*;
 import javax.swing.border.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 public class Main {
@@ -20,7 +21,7 @@ public class Main {
   protected JButton saveButton;
   protected JButton visualButton;
 
-  protected JTable loadTable;
+  protected DefaultTableModel loadTableModel;
 
   protected Data dataObject=new Data();
   protected String[] columns={"ID", "Last Name","First Name", "Vaccine Type","Vaccination Date","Vaccine Location"};
@@ -176,8 +177,10 @@ public class Main {
         }
       }
       //createTable(data, columns);
-      
-      loadTable=new JTable(data, columns);
+      loadTableModel=new DefaultTableModel(data,columns);
+      //loadTable=new JTable(data, columns);
+      JTable loadTable=new JTable(loadTableModel);
+
       //made some columns wider as some of the column names were too long
       loadTable.getColumnModel().getColumn(3).setPreferredWidth(100);
       loadTable.getColumnModel().getColumn(4).setPreferredWidth(150);
@@ -199,23 +202,7 @@ public class Main {
     }
     overallPanel.add(loadPanel, panelLayout);
   }
-/*
-  public void createTable(String[][] data, String[] columns)
-  {
-      loadTable=new JTable(data, columns);
-      //made some columns wider as some of the column names were too long
-      loadTable.getColumnModel().getColumn(3).setPreferredWidth(100);
-      loadTable.getColumnModel().getColumn(4).setPreferredWidth(150);
-      loadTable.getColumnModel().getColumn(5).setPreferredWidth(150);
 
-      JScrollPane scrollPane = new JScrollPane(loadTable);
-
-      //to create Horizontal scrollbars
-      loadTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-
-      loadPanel.add(scrollPane);
-  }
-*/
   public void setUpAdd(GridBagConstraints panelLayout)
   {
     JPanel labelPanel=new JPanel(new GridLayout(0,1));
@@ -278,7 +265,8 @@ public class Main {
           
         }
         else{
-          //String newRow=date+last+first+type+location;
+          String newRow[]={id,last,first,type,date,location};
+          loadTableModel.addRow(newRow);
           dataObject.addRow(id,last,first,type,date,location);
           dateField.setText("");
           idField.setText("");
