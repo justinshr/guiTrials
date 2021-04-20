@@ -168,7 +168,6 @@ public class Main {
         //calls this method to check if path is valid and creates table
         
           setUpLoad(panelLayout,input);
-        
       }
     });
     loadPanel.add(ask);
@@ -178,8 +177,6 @@ public class Main {
 
     //make this panel invisible, until the Load button is pressed
     loadPanel.setVisible(false);
-    //setUpLoad(panelLayout," ");
-    
   }
 
   //main load method that takes user input and creates table with bars
@@ -255,13 +252,11 @@ public class Main {
       //idField.setValue(new Integer(numPeriods));
     idField.setColumns(10);
     
-
     JTextField lastField=new JTextField(10);
     JTextField firstField=new JTextField(10);
     JTextField typeField=new JTextField(10);
     JTextField locationField=new JTextField(10);
     
-
     textfieldPanel.add(dateField);
     textfieldPanel.add(idField);
     textfieldPanel.add(lastField);
@@ -304,14 +299,12 @@ public class Main {
       }
     });
     
-    
     addPanel.add(labelPanel,BorderLayout.CENTER);
     addPanel.add(textfieldPanel,BorderLayout.LINE_END);
     addPanel.add(submitButton);
     addPanel.add(addError);
     
     overallPanel.add(addPanel, panelLayout);
-
 
     //make this panel invisible, until the Add button is pressed
     addPanel.setVisible(false);
