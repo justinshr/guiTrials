@@ -276,10 +276,10 @@ public class Main {
         String location=locationField.getText();
 
         boolean empty=last.equals("")||first.equals("")||type.equals("")||location.equals("") ||id.equals("")||date.equals("");
-        boolean valid=validInputs(id, last, first, type,  date, location);
+        boolean valid=dataObject.validInputs(id, last, first, type,  date, location);
         if(valid)
         {
-          id=idFix(id);
+          id=dataObject.idFix(id);
         }
         if(empty|| !valid){  
           addError.setVisible(true);
@@ -310,62 +310,7 @@ public class Main {
     addPanel.setVisible(false);
   }
 
-  //check if added inputs are valid
-  public boolean validInputs(String id, String last, String first,String type, String date, String location)
-  {
-    return numberInputs(id,false) && stringInputs(last) && stringInputs(first) && stringInputs(type) && numberInputs(date,true) && stringInputs(location);
-  }
-
-  //check if inputs that are supposed to be Strings are strings
-  public boolean stringInputs(String input)
-  {
-    for(int i=0;i<input.length();i++)
-    {
-      char check=input.charAt(i);
-      if(!Character.isLetter(check))
-      {
-        return false;
-      }
-    }
-    return true;
-  }
-  //check if inputs are numbers
-  public boolean numberInputs(String input, boolean date)
-  {
-    if(!date && input.length()>5)
-    {
-      return false;
-    }
-    for(int i=0;i<input.length();i++)
-    {
-      char check=input.charAt(i);
-      if(date &&(i==2 || i==5))
-      {
-        continue;
-      }
-      if(!Character.isDigit(check))
-      {
-        return false;
-      }
-    }
-    return true;
-  }
-
-  public String idFix(String id)
-  {
-    if(id.length()==5)
-    {
-      return id;
-    }
-    else{
-      int zeros=5-id.length();
-      for(int i=1;i<=zeros;i++)
-      {
-        id="0"+id;
-      }
-      return id;
-    }
-  }
+  
 
   public void setUpSave(GridBagConstraints panelLayout)
   {

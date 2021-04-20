@@ -1,9 +1,11 @@
 import java.util.*;
+import org.jfree.chart.*;
+import org.jfree.data.general.*;
 
 //create separate Graph class to house graph setup calculations
 public class Graph{
 
-  protected int[] counts;
+  protected double[] counts;
   protected int total;
   protected String[][] data;
   protected List<String> vaccineTypes;
@@ -15,7 +17,7 @@ public class Graph{
 
   //initialize count int array, each count[i] will correspond to the count of each vaccine type
   public void getCounts(){
-    counts=new int[vaccineTypes.size()];
+    counts=new double[vaccineTypes.size()];
     //cycle through each vaccine type
     for(int i=0;i<vaccineTypes.size();i++)
     {
@@ -25,9 +27,13 @@ public class Graph{
       {
         if(data[row][3].equals(check))
         {
-          counts[i]=counts[i]+1;
+          counts[i]=counts[i]+1.0;
         }
       }
     }
   }
+
+  
+
+
 }
