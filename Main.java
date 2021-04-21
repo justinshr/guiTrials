@@ -4,6 +4,7 @@ import javax.swing.border.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.io.*;
 public class Main {
   protected JFrame frame;
   protected JPanel aboutPanel;
@@ -29,6 +30,8 @@ public class Main {
 
   protected JLabel loadError;
   protected JLabel addError;
+  protected JLabel saveError;
+  protected JLabel saved;
 
   //Constructor, sets up the GUI application and performs other operations
   public Main(){
@@ -123,7 +126,8 @@ public class Main {
     preLoad(panelLayout);
     //setUpLoad(panelLayout);
     setUpAdd(panelLayout);
-    setUpSave(panelLayout);
+    preSave(panelLayout);
+    //setUpSave(panelLayout);
     setUpVisualize(panelLayout);
   }
 
@@ -288,7 +292,7 @@ public class Main {
         else{
           String newRow[]={id,last,first,type,date,location};
           loadTableModel.addRow(newRow);
-          dataObject.addRow(id,last,first,type,date,location);
+          dataObject.addRow(newRow);
         }
         dateField.setText("");
         idField.setText("");
@@ -311,7 +315,106 @@ public class Main {
   }
 
   
+  public void preSave(GridBagConstraints panelLayout)
+  {
+    JLabel ask=new JLabel("Export to Path:");
+    saved=new JLabel("Saved");
+    JTextField textInput=new JTextField(5);
+    savePanel=new JPanel();
+    saveError=new JLabel("cannot write");
+    //creates a text field for user to put in valid path
+    textInput.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(ActionEvent event) {
+                String input=textInput.getText();
+                //removes the text field to create table
+                //checks if there were any errors saving, output error text if there were any difficulty
+                if(!setUpSave(panelLayout,input))
+                {
+                  saveError.setVisible(true);
+                }
+                else
+                {
+                  saved.setVisible(true);
+                }
+                textInput.setText("");
+            }
+    });
+    savePanel.add(ask);
+    savePanel.add(textInput);
+    savePanel.add(saved);
+    savePanel.add(saveError);
+    overallPanel.add(savePanel, panelLayout);
 
+    //make this panel invisible, until the Load button is pressed
+    savePanel.setVisible(false);
+    //setUpLoad(panelLayout," ");
+
+    }
+
+    public boolean setUpSave(GridBagConstraints panelLayout, String input)
+    {
+       //delete this line
+      try {
+          File myObj = new File(input);
+          if (myObj.createNewFile()) {
+              FileWriter csvWriter = new FileWriter(input);
+              
+              //String[] columns={"ID", "Last Name","First Name", "Vaccine Type","Vaccination Date","Vaccine Location"};
+              String[][] data=dataObject.returnData;
+              if(data==null)
+              {
+                return false;
+              }
+              for(int firstLine=0;firstLine<6;firstLine++)
+              {
+                csvWriter.append(columns[firstLine]);
+                if(firstLine<5)
+                {
+                  csvWriter.append(",");
+                }
+              }
+              csvWriter.append("\n");
+              for (int i = 0; i<data.length; i++){
+                  for (int j = 0; j<data[i].length; j++){
+                      csvWriter.append(data[i][j]);
+                      if(j<data[i].length-1)
+                      {
+                        csvWriter.append(",");
+                      }
+                  }
+                  if(i<data.length-1)
+                  {
+                    csvWriter.append("\n");
+                  }
+              }
+              
+              csvWriter.flush();
+              csvWriter.close();
+
+              //saved.setVisible(true);
+              //saveError.setVisible(false);
+              return true;
+              //loadPanel.add(error);
+              //preSave(panelLayout);
+          } 
+          else {
+              //saveError.setVisible(true);
+              return false;
+              //loadPanel.add(error);
+              //preSave(panelLayout);
+          }
+      } catch (IOException e) {
+          //saveError.setVisible(true);
+          //loadPanel.add(error);
+          //preSave(panelLayout);
+          return false;
+      }
+        //overallPanel.add(loadPanel, panelLayout);
+        //make this panel invisible, until the Load button is pressed
+      //savePanel.setVisible(false);
+    }
+
+  /*
   public void setUpSave(GridBagConstraints panelLayout)
   {
     JLabel loadTitle=new JLabel("Save");
@@ -335,7 +438,7 @@ public class Main {
     overallPanel.add(savePanel, panelLayout);
     //make this panel invisible, until the Load button is pressed
     savePanel.setVisible(false);
-  }
+  }*/
 
   public void setUpVisualize(GridBagConstraints panelLayout)
   {
@@ -361,6 +464,14 @@ public class Main {
     if(addError!=null)
     {
       addError.setVisible(false);
+    }
+    if(saveError!=null)
+    {
+      saveError.setVisible(false);
+    }
+    if(saved!=null)
+    {
+      saved.setVisible(false);
     }
     //following are if statements based on which button was pressed to show what frame
     if(buttonName.equals("about"))

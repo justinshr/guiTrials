@@ -39,22 +39,21 @@ public class Data {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        lines.remove(0);
     }
 
   public String getLine (int lineNumber){
       return lines.get(lineNumber - 1);
   }
 
-  public void addRow(String id, String lName, String fName, String type, String date, String location)
+  public void addRow(String[] newRow)
   {
+    
     columns+=1;
-    lines.add(id);
-    lines.add(lName);
-    lines.add(fName);
-    lines.add(type);
-    lines.add(date);
-    lines.add(location);
+    for(String newFields:newRow)
+    {
+      lines.add(newFields);
+    }
+    
     setUpObjectArray();
   }
 

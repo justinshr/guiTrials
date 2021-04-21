@@ -1,6 +1,6 @@
 import java.util.*;
-import org.jfree.chart.*;
-import org.jfree.data.general.*;
+//import org.jfree.chart.*;
+//import org.jfree.data.general.*;
 
 //create separate Graph class to house graph setup calculations
 public class Graph{
