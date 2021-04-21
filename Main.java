@@ -330,10 +330,12 @@ public class Main {
                 //checks if there were any errors saving, output error text if there were any difficulty
                 if(!setUpSave(panelLayout,input))
                 {
+                  saved.setVisible(false);
                   saveError.setVisible(true);
                 }
                 else
                 {
+                  saveError.setVisible(false);
                   saved.setVisible(true);
                 }
                 textInput.setText("");
@@ -445,7 +447,12 @@ public class Main {
     JLabel loadTitle=new JLabel("Visualize");
     visualizePanel=new JPanel();
     visualizePanel.add(loadTitle);
+    Graph graph=new Graph(dataObject.returnData,dataObject.vaccineTypes);
     overallPanel.add(visualizePanel, panelLayout);
+    /*
+    pieChart=graph.createPieChart(graph.createPieDataset());
+    ChartPanel CP=new ChartPanel(pieChart);
+    visualizePanel.add(CP);*/
     //make this panel invisible, until the Visualize button is pressed
     visualizePanel.setVisible(false);
   }

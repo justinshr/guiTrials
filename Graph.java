@@ -33,6 +33,33 @@ public class Graph{
     }
   }
 
+  /*
+  public PieDataset createPieDataset() 
+  {
+	  DefaultPieDataset dataset = new DefaultPieDataset( );
+	  for(int i=0;i<vaccineTypes.size();i++)
+	  {
+		  dataset.setValue(vaccineTypes.get(i), counts[i]);
+	  }
+	  return dataset;
+  }
+  
+  public CategoryDataset createDataset() 
+  {
+	  DefaultCategoryDataset dataset = new DefaultCategoryDataset( );
+	  for(int i=0;i<vaccineTypes.size();i++)
+	  {
+		  dataset.addValue(counts[i],"vaccine",vaccineTypes.get(i));
+	  }
+	  return dataset;
+  }
+  
+  public JFreeChart createPieChart(PieDataset dataset)
+  {
+	  JFreeChart chart=ChartFactory.createPieChart("Vaccine Types",dataset,true, true,false);
+	  return chart;
+  }*/
+
   
 
 

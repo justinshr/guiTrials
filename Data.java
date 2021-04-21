@@ -11,7 +11,7 @@ public class Data {
     //returnData is one of the parameters needed for the Load Data's table
     public static String[][] returnData;
     //create a List<String> to find the different vaccine types to help with graphs
-    private static List<String> vaccineTypes=new ArrayList<String>();
+    public static List<String> vaccineTypes=new ArrayList<String>();
     public void addLines(String path) {
         try {
             String line = "";
