@@ -1,6 +1,6 @@
 import java.util.*;
 import org.jfree.chart.*;
-import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.chart.plot.*;
 import org.jfree.data.category.*;
 import org.jfree.data.general.*;
 public class Graph {

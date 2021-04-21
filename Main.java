@@ -375,69 +375,7 @@ public class Main {
     //setUpLoad(panelLayout," ");
 
     }
-/*
-    public boolean setUpSave(String input)
-    {
-      try {
-          File myObj = new File(input);
-          if (myObj.createNewFile()) {
-              FileWriter csvWriter = new FileWriter(input);
-              
-              //String[] columns={"ID", "Last Name","First Name", "Vaccine Type","Vaccination Date","Vaccine Location"};
-              String[][] data=dataObject.returnData;
-              if(data==null)
-              {
-                return false;
-              }
-              for(int firstLine=0;firstLine<6;firstLine++)
-              {
-                csvWriter.append(columns[firstLine]);
-                if(firstLine<5)
-                {
-                  csvWriter.append(",");
-                }
-              }
-              csvWriter.append("\n");
-              for (int i = 0; i<data.length; i++){
-                  for (int j = 0; j<data[i].length; j++){
-                      csvWriter.append(data[i][j]);
-                      if(j<data[i].length-1)
-                      {
-                        csvWriter.append(",");
-                      }
-                  }
-                  if(i<data.length-1)
-                  {
-                    csvWriter.append("\n");
-                  }
-              }
-              
-              csvWriter.flush();
-              csvWriter.close();
 
-              //saved.setVisible(true);
-              //saveError.setVisible(false);
-              return true;
-              //loadPanel.add(error);
-              //preSave(panelLayout);
-          } 
-          else {
-              //saveError.setVisible(true);
-              return false;
-              //loadPanel.add(error);
-              //preSave(panelLayout);
-          }
-      } catch (IOException e) {
-          //saveError.setVisible(true);
-          //loadPanel.add(error);
-          //preSave(panelLayout);
-          return false;
-      }
-        //overallPanel.add(loadPanel, panelLayout);
-        //make this panel invisible, until the Load button is pressed
-      //savePanel.setVisible(false);
-    }
-*/
   public void setUpVisualize(GridBagConstraints panelLayout)
   {
     visualizePanel=new JPanel();

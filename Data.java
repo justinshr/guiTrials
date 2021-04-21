@@ -16,14 +16,10 @@ public class Data {
         try {
             String line = "";
             String splitBy = ",";
-            String currLine = "";
-            //BufferedReader br = new BufferedReader(new FileReader("/Users/manav/guiTrials/TeamProjectRandomData - 10People.csv"));
             BufferedReader br = new BufferedReader(new FileReader(path));
             columns=0;
             while ((line = br.readLine()) != null) {
                 String[] data = line.split(splitBy);
-                //currLine = (data[0] + ", " + data[1] + ", " + data[2] +
-                //        ", " + data[3] + ", " + data[4] + ", " + data[5]);
                 //add individually into lines to make conversion into String [][] easier
                 //try to ignore the first line of csv files that has the format of the strings
                 if(!data[0].equals("ID"))
@@ -47,13 +43,11 @@ public class Data {
 
   public void addRow(String[] newRow)
   {
-    
     columns+=1;
     for(String newFields:newRow)
     {
       lines.add(newFields);
     }
-    
     setUpObjectArray();
   }
 
@@ -134,6 +128,7 @@ public class Data {
     return true;
   }
 
+  //if an ID length is less than 5, add 0s in front of it
   public String idFix(String id)
   {
     if(id.length()==5)
@@ -150,7 +145,8 @@ public class Data {
     }
   }
 
-    //use this method to implement save data
+   //use this method to implement save data
+  //return true if successful save
   public boolean setUpSave(String input)
   {
     try {
@@ -164,6 +160,7 @@ public class Data {
             {
               return false;
             }
+            //add the columns since this was filtered out when reading the csv file initially
             for(int firstLine=0;firstLine<6;firstLine++)
             {
               csvWriter.append(columns[firstLine]);
@@ -173,6 +170,7 @@ public class Data {
               }
             }
             csvWriter.append("\n");
+            //cycle through data and add to csv file
             for (int i = 0; i<data.length; i++){
                 for (int j = 0; j<data[i].length; j++){
                     csvWriter.append(data[i][j]);
