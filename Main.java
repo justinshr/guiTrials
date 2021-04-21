@@ -1,10 +1,16 @@
 import javax.swing.*;
 import javax.swing.text.*;
+
+import org.jfree.chart.*;
+import org.jfree.data.general.*;
+import org.jfree.data.category.*;
+
 import javax.swing.border.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.io.*;
+
 public class Main {
   protected JFrame frame;
   protected JPanel aboutPanel;
@@ -24,6 +30,7 @@ public class Main {
   protected JButton visualButton;
 
   protected DefaultTableModel loadTableModel;
+   
 
   protected Data dataObject=new Data();
   protected String[] columns={"ID", "Last Name","First Name", "Vaccine Type","Vaccination Date","Vaccine Location"};
@@ -33,6 +40,11 @@ public class Main {
   protected JLabel saveError;
   protected JLabel saved;
 
+  protected Graph graph;
+  protected JFreeChart pieChart;
+  protected JFreeChart barChart;
+  protected ChartPanel pieContain;
+  protected ChartPanel barContain;
   //Constructor, sets up the GUI application and performs other operations
   public Main(){
     
@@ -43,8 +55,7 @@ public class Main {
     //form basis of the GUI application, starting with the Title: Covid 19 vaccine information
     frame = new JFrame("COVID 19 Vaccine Information");
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    frame.setSize(750,500);
-    //frame.setSize(300,300);
+    frame.setSize(1200,600);
     //create a formating panel to add to the frame
     overallPanel=new JPanel(new GridBagLayout());
     //overallPanel.setBorder(new EmptyBorder(0,0,0,0));
@@ -159,6 +170,7 @@ public class Main {
           ask.setVisible(false);
           textInput.setVisible(false);
           loadError.setVisible(false);
+          
         }
         else
         {
@@ -170,7 +182,6 @@ public class Main {
 
         }
         //calls this method to check if path is valid and creates table
-        
           setUpLoad(panelLayout,input);
       }
     });
@@ -214,6 +225,12 @@ public class Main {
       loadTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
       loadPanel.add(scrollPane);
+      if(graph!=null)
+      {
+    	  pieContain.setVisible(false);
+    	  barContain.setVisible(false);
+      }
+      createGraph(panelLayout);
       
     }
     overallPanel.add(loadPanel, panelLayout);
@@ -293,6 +310,12 @@ public class Main {
           String newRow[]={id,last,first,type,date,location};
           loadTableModel.addRow(newRow);
           dataObject.addRow(newRow);
+          if(graph!=null)
+          {
+        	  pieContain.setVisible(false);
+        	  barContain.setVisible(false);
+          }
+          createGraph(panelLayout);
         }
         dateField.setText("");
         idField.setText("");
@@ -328,7 +351,7 @@ public class Main {
                 String input=textInput.getText();
                 //removes the text field to create table
                 //checks if there were any errors saving, output error text if there were any difficulty
-                if(!setUpSave(panelLayout,input))
+                if(!dataObject.setUpSave(input))
                 {
                   saved.setVisible(false);
                   saveError.setVisible(true);
@@ -352,10 +375,9 @@ public class Main {
     //setUpLoad(panelLayout," ");
 
     }
-
-    public boolean setUpSave(GridBagConstraints panelLayout, String input)
+/*
+    public boolean setUpSave(String input)
     {
-       //delete this line
       try {
           File myObj = new File(input);
           if (myObj.createNewFile()) {
@@ -415,46 +437,33 @@ public class Main {
         //make this panel invisible, until the Load button is pressed
       //savePanel.setVisible(false);
     }
-
-  /*
-  public void setUpSave(GridBagConstraints panelLayout)
-  {
-    JLabel loadTitle=new JLabel("Save");
-    savePanel=new JPanel();
-    JLabel ask=new JLabel("Enter Valid File To Write To");
-    JTextField textInput=new JTextField(5);
-    //creates a text field for user to put in valid path
-    textInput.addActionListener(new java.awt.event.ActionListener() {
-      public void actionPerformed(ActionEvent event) {
-        String input=textInput.getText();
-        //removes the text field to create table
-        ask.setVisible(false);
-        textInput.setVisible(false);
-        //calls this method to check if path is valid and creates table
-        dataObject.writeFile(input);
-      }
-    });
-    //savePanel.add(loadTitle);
-    savePanel.add(ask);
-    savePanel.add(textInput);
-    overallPanel.add(savePanel, panelLayout);
-    //make this panel invisible, until the Load button is pressed
-    savePanel.setVisible(false);
-  }*/
-
+*/
   public void setUpVisualize(GridBagConstraints panelLayout)
   {
-    JLabel loadTitle=new JLabel("Visualize");
     visualizePanel=new JPanel();
-    visualizePanel.add(loadTitle);
-    Graph graph=new Graph(dataObject.returnData,dataObject.vaccineTypes);
+    if(dataObject.returnData!=null && dataObject.vaccineTypes!=null)
+    {
+	    createGraph(panelLayout);
+    }
     overallPanel.add(visualizePanel, panelLayout);
-    /*
-    pieChart=graph.createPieChart(graph.createPieDataset());
-    ChartPanel CP=new ChartPanel(pieChart);
-    visualizePanel.add(CP);*/
     //make this panel invisible, until the Visualize button is pressed
     visualizePanel.setVisible(false);
+  }
+  
+  public void createGraph(GridBagConstraints panelLayout)
+  {
+	  graph=new Graph(dataObject.returnData,dataObject.vaccineTypes);
+	  PieDataset pieSet=graph.createPieDataset();
+	  pieChart=graph.createPieChart(pieSet);
+	  CategoryDataset barSet=graph.createBarDataset();
+	  barChart=graph.createBarChart(barSet);
+	  pieContain=new ChartPanel(pieChart);
+	  pieContain.setPreferredSize(new Dimension(400,400));
+	  barContain=new ChartPanel(barChart);
+	  barContain.setPreferredSize(new Dimension(600,400));
+	  visualizePanel.add(pieContain);
+	  visualizePanel.add(barContain);
+	  
   }
 
   private void openFrame(String buttonName){

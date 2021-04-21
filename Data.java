@@ -151,8 +151,52 @@ public class Data {
   }
 
     //use this method to implement save data
-    public void writeFile(String input){
+  public boolean setUpSave(String input)
+  {
+    try {
+        File myObj = new File(input);
+        if (myObj.createNewFile()) {
+            FileWriter csvWriter = new FileWriter(input);
+            
+            String[] columns={"ID", "Last Name","First Name", "Vaccine Type","Vaccination Date","Vaccine Location"};
+            String[][] data=returnData;
+            if(data==null)
+            {
+              return false;
+            }
+            for(int firstLine=0;firstLine<6;firstLine++)
+            {
+              csvWriter.append(columns[firstLine]);
+              if(firstLine<5)
+              {
+                csvWriter.append(",");
+              }
+            }
+            csvWriter.append("\n");
+            for (int i = 0; i<data.length; i++){
+                for (int j = 0; j<data[i].length; j++){
+                    csvWriter.append(data[i][j]);
+                    if(j<data[i].length-1)
+                    {
+                      csvWriter.append(",");
+                    }
+                }
+                if(i<data.length-1)
+                {
+                  csvWriter.append("\n");
+                }
+            }
+            csvWriter.flush();
+            csvWriter.close();
+            return true;
 
+        } 
+        else {
+            return false;
+        }
+    } catch (IOException e) {
+        return false;
     }
+  }
 
 }
