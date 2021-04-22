@@ -307,8 +307,12 @@ public class Main {
           //addPanel.add(error);
         }
         else{
+          
           String newRow[]={id,last,first,type,date,location};
-          loadTableModel.addRow(newRow);
+          if(loadTableModel!=null)
+          {
+        	  loadTableModel.addRow(newRow);
+          }
           dataObject.addRow(newRow);
           if(graph!=null)
           {
@@ -379,7 +383,7 @@ public class Main {
   public void setUpVisualize(GridBagConstraints panelLayout)
   {
     visualizePanel=new JPanel();
-    if(dataObject.returnData!=null && dataObject.vaccineTypes!=null)
+    if(dataObject.returnData!=null && dataObject.vaccineTypes!=null &&dataObject.vaccineLocations!=null)
     {
 	    createGraph(panelLayout);
     }
@@ -390,7 +394,7 @@ public class Main {
   
   public void createGraph(GridBagConstraints panelLayout)
   {
-	  graph=new Graph(dataObject.returnData,dataObject.vaccineTypes);
+	  graph=new Graph(dataObject.returnData,dataObject.vaccineTypes,dataObject.vaccineLocations);
 	  PieDataset pieSet=graph.createPieDataset();
 	  pieChart=graph.createPieChart(pieSet);
 	  CategoryDataset barSet=graph.createBarDataset();

@@ -12,6 +12,7 @@ public class Data {
     public static String[][] returnData;
     //create a List<String> to find the different vaccine types to help with graphs
     public static List<String> vaccineTypes=new ArrayList<String>();
+    public static List<String> vaccineLocations=new ArrayList<String>();
     public void addLines(String path) {
         try {
             String line = "";
@@ -68,6 +69,10 @@ public class Data {
           if(j==3 && !vaccineTypes.contains(lines.get(index)))
           {
             vaccineTypes.add(lines.get(index));
+          }
+          if(j==5 &&!vaccineLocations.contains(lines.get(index)))
+          {
+        	  vaccineLocations.add(lines.get(index));
           }
           index++;
         }
